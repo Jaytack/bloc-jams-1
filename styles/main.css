@@ -27,7 +27,7 @@ body {
 .navbar .logo {
     position: relative; /* positioning will be explained in a resource */
     left: 2rem;
-    cursor; pointer; /* produces the finger-pointer icon when you hover over the logo */
+    cursor: pointer; /* produces the finger-pointer icon when you hover over the logo */
 }
 
 .navbar .links-container {
@@ -56,12 +56,17 @@ body {
     text-transform: uppercase;
     /* #3 */
     text-decoration: none;
-    cursor: pointer;
+    cursor: pointer; 
 }
 
-/* $5 */
+/* #5 */
 .links-container .navbar-link:hover {
     color: rgb(233,50,117);
+}
+
+.links-container .navbar-link:active {
+    color: rgb(233,50,117);
+    background-color: white;
 }
 
 .container {
@@ -94,7 +99,7 @@ body {
 
 .clearfix::before,
 
-.clearfis::after {
+.clearfix::after {
     content: "";
     display: table;
 }
