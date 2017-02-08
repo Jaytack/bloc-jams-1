@@ -30,6 +30,22 @@ var albumMarconi = {
     ]
 };
 
+// Assignment 11 Album
+var albumVanGogh = {
+    title: 'Who Needs Two Ears?',
+    artist: 'Vincent Van Gogh',
+    label: 'Impressionism',
+    year: '1888',
+    albumArtUrl: 'assets/images/album_covers/22.png',
+    songs: [
+        { title: 'Oil over acryllic', duration: '2:01' },
+        { title: 'Holland is home', duration: '3:01' },
+        { title: 'Though, Paris is nice...', duration: '3:51' },
+        { title: 'Manics paint faster', duration: '3:04' },
+        { title: 'An early ending', duration: '0:35' }
+    ]
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
     var template =
         '<tr class="album-view-item">'
@@ -42,14 +58,14 @@ var createSongRow = function(songNumber, songName, songLength) {
     return template;
 };
 
+// #1 - moved to global scope, was below var setCurrentAlbum
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
 var setCurrentAlbum = function(album) {
-    // #1
-    var albumTitle = document.getElementsByClassName('album-view-title')[0];
-    var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-    var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-    var albumImage = document.getElementsByClassName('album-cover-art')[0];
-    var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
-    
     // #2
     albumTitle.firstChild.nodeValue = album.title;
     albumArtist.firstChild.nodeValue = album.artist;
@@ -66,5 +82,10 @@ var setCurrentAlbum = function(album) {
 };
 
 window.onload = function() {
+    var albumGroup = [albumVanGogh, albumMarconi, albumPicasso]
+    var randomChoice = albumGroup[Math.floor(Math.random() * albumGroup.length)];
     setCurrentAlbum(albumPicasso);
+    albumImage.addEventListener('click', function(event) {
+        setCurrentAlbum(randomChoice);
+    });
 };
