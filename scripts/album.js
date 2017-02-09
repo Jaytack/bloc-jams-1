@@ -48,7 +48,7 @@ var albumVanGogh = {
 
 var createSongRow = function(songNumber, songName, songLength) {
     var template =
-        '<tr class="album-view-item">'
+        '<tr class="album-view-song-item">'
     +   '  <td class="song-item-number">' + songNumber + '</td>'
     +   '  <td class="song-item-title">' + songName + '</td>'
     +   '  <td class="song-item-duraiton">' + songLength + '</td>'
@@ -82,10 +82,15 @@ var setCurrentAlbum = function(album) {
 };
 
 window.onload = function() {
-    var albumGroup = [albumVanGogh, albumMarconi, albumPicasso]
-    var randomChoice = albumGroup[Math.floor(Math.random() * albumGroup.length)];
     setCurrentAlbum(albumPicasso);
-    albumImage.addEventListener('click', function(event) {
-        setCurrentAlbum(randomChoice);
-    });
 };
+
+var albumGroup = [albumPicasso, albumMarconi, albumVanGogh]
+var nextAlbum = 1;
+albumImage.addEventListener('click', function(event) {
+    setCurrentAlbum(albumGroup[nextAlbum]);
+    nextAlbum++;
+    if (nextAlbum == albumGroup.length) {
+        nextAlbum = 0;
+    }
+});
