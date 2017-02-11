@@ -67,13 +67,18 @@ var setCurrentAlbum = function(album) {
 
 // checkpoint - update code on my own - this was directly from checkpoint
 var findParentByClassName = function(element, targetClass) {
+var currentParent = element.parentElement;
     if (element) {
-        var currentParent = element.parentElement;
         while (currentParent.className != targetClass && currentParent.className !== null) {
             currentParent = currentParent.parentElement;
         }
         return currentParent;
+    } 
+    if (currentParent.className == null) {
+        console.log("No parent found with " + targetClass)
     }
+     // 77 -  if parent does not exist
+        // 78 - console.log "No parent found with that class name"
 };
 
 // checkpoint - update code on my own - this was directly from checkpoint
