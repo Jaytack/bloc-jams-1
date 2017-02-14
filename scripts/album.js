@@ -1,4 +1,3 @@
-// Example Album
 var albumPicasso = {
     title: 'The Colors',
     artist: 'Pablo Picasso',
@@ -14,7 +13,6 @@ var albumPicasso = {
     ]
 };
 
-// Another Example Album
 var albumMarconi = {
     title: 'The Telephone',
     artist: 'Guglielmo Marconi',
@@ -53,7 +51,7 @@ var setCurrentAlbum = function(album) {
     // #2
     albumTitle.firstChild.nodeValue = album.title;
     albumArtist.firstChild.nodeValue = album.artist;
-    albumReleaseInfo.firstChild.nodeValue - album.year + ' ' + album.label;
+    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
     albumImage.setAttribute('src', album.albumArtUrl);
     
     // #3
@@ -67,18 +65,23 @@ var setCurrentAlbum = function(album) {
 
 // checkpoint - update code on my own - this was directly from checkpoint
 var findParentByClassName = function(element, targetClass) {
-var currentParent = element.parentElement;
     if (element) {
-        while (currentParent.className != targetClass && currentParent.className !== null) {
-            currentParent = currentParent.parentElement;
+        var currentParent = element.parentElement;
+        //if element has no parent > console.log ('No parent found')
+        if (currentParent === null) {
+            console.log("No parent found");
+        } else {
+            while (currentParent.className !== targetClass && currentParent.className !== null) {
+                currentParent = currentParent.parentElement;
+            }
+            //if parent does not have a given class name > console.log ('No parent found with that class name')
+            if (currentParent.className === null) {
+                console.log("No paerent found with that class name");
+            } else {
+                return currentParent; //This was originally form checkpoint
+            } 
         }
-        return currentParent;
-    } 
-    if (currentParent.className == null) {
-        console.log("No parent found with " + targetClass)
     }
-     // 77 -  if parent does not exist
-        // 78 - console.log "No parent found with that class name"
 };
 
 // checkpoint - update code on my own - this was directly from checkpoint
@@ -101,11 +104,10 @@ var getSongItem = function(element) {
 };
 
 var clickHandler = function(targetElement) {
-    
+    //console.log(targetElement) //a test during call with David
     var songItem = getSongItem(targetElement);
-    
     if (currentlyPlayingSong === null) {
-        songItem.innerHTML = pauseButtonTemplate;
+        songItem.innerHTML = pauseButtonTemplate; //this line somehow causes an error
         currentlyPlayingSong = songItem.getAttribute('data-song-number');
     } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
         songItem.innerHTML = playButtonTemplate;
@@ -129,24 +131,20 @@ var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause">
 //Store state of playing songs
 var currentlyPlayingSong = null;
 
-// Change song number to play icon
-var numToPlayIcon = function(event) {                                   
-    if (event.target.parentElement.className === 'album-view-song-item') {
-        event.target.parentElement.querySelector('.song-item-number').innerHTML = pauseButtonTemplate;
-        // checkpoint - update code on my own
-        var songItem = getSongItem(event.target);
-        
-        if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
-            songItem.innerHTML = playButtonTemplate;
-        }
-    }
-};
-
-
 window.onload = function() {
     setCurrentAlbum(albumPicasso);
     
-    songListContainer.addEventListener('mouseover', numToPlayIcon);
+    songListContainer.addEventListener('mouseover', function(event) {
+        if (event.target.parentElement.className === 'album-view-song-item') {
+            event.target.parentElement.querySelector('.song-item-number').innerHTML = pauseButtonTemplate; //I've tried this as a pause button, it's supposed to be play button
+        // checkpoint - update code on my own
+            var songItem = getSongItem(event.target);
+        
+            if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
+                songItem.innerHTML = playButtonTemplate;
+            }
+        }
+    });
       
     for (var i=0; i<songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function(event) {
@@ -157,11 +155,10 @@ window.onload = function() {
             if (songItemNumber !== currentlyPlayingSong) {
                 songItem.innerHTML = songItemNumber;
             }
-
         });
         
         songRows[i].addEventListener('click', function(event) {
-            clickHandler(event.target);
+            clickHandler(event.target); //this line somehow causes an error
         });
     }
 }
@@ -172,4 +169,3 @@ window.onload = function() {
 // #2 - When mouse leaves table row > pause icon to remain
 // #3 - Click play icon over other song number > change play icon to pause > replace original pause icon with original song number
 // #4 - Hover over other numbers to see play button replace song number. Do not show play button over current pause button.
-
