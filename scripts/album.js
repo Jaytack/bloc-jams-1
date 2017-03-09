@@ -158,10 +158,26 @@ var currentVolume = 80;
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
+var $mainControlsSelector = $('.main-controls .play-pause'); // #1 from assignment
+var togglePlayFromPlayerBar = function () { // #2 from assignment
+	if (currentlyPlayingSongNumber) {
+		if (currentSoundFile.isPaused()) {
+			getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
+			$mainControlsSelector.html(playerBarPauseButton);
+			currentSoundFile.play();
+		} else {
+			getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate);
+			$mainControlsSelector.html(playerBarPlayButton);
+			currentSoundFile.pause();
+		}
+	} 
+};
+
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
     $previousButton.click(previousSong);
-    $nextButton.click(nextSong);
+    $nextButton.click(nextSong);    
+    $mainControlsSelector.click(togglePlayFromPlayerBar); // #1 from assignment - somehow add 
 });
 
 var setSong = function(songNumber) {
@@ -170,9 +186,7 @@ var setSong = function(songNumber) {
     }
     currentlyPlayingSongNumber = parseInt(songNumber);
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
-    // #1
     currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
-        // #2
         formats: [ 'mp3' ],
         preload: true
     });
