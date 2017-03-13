@@ -3,7 +3,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         '<tr class="album-view-song-item">'
     +   '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     +   '  <td class="song-item-title">' + songName + '</td>'
-    +   '  <td class="song-item-duraiton">' + songLength + '</td>'
+    +   '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     +   '</tr>'
     ;
     
@@ -94,6 +94,7 @@ var updateSeekBarWhileSongPlays = function() {
             var $seekBar = $('.seek-control .seek-bar');
             
             updateSeekPercentage($seekBar, seekBarFillRatio);
+            setCurrentTimeInPlayerBar(currentSoundFile.getTime()); // #1 from assignment 21
         });
     }
 };
@@ -207,7 +208,7 @@ var previousSong = function() {
     currentSoundFile.play();
     updateSeekBarWhileSongPlays();
     
-    updatePlayerBarSong(); // update player bar
+    updatePlayerBarSong();
     
     var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
     var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
@@ -222,8 +223,9 @@ var updatePlayerBarSong = function(){
 $('.currently-playing .song-name').text(currentSongFromAlbum.title);
 $('.currently-playing .artist-name').text(currentAlbum.artist);
 $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
+$('.main-controls .play-pause').html(playerBarPauseButton);
+setTotalTimeInPlayerBar(currentSongFromAlbum.duration); // #2 from assignment
     
-    $('.main-controls .play-pause').html(playerBarPauseButton);
 };
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
@@ -290,4 +292,30 @@ var setVolume = function(volume) {
 
 var getSongNumberCell = function(number) {
     return $('.song-item-number[data-song-number="' + number + '"]');
+};
+
+// #1 from assignment 21
+var setCurrentTimeInPlayerBar = function(currentTime) {
+    $('.current-time').text(filterTimeCode(currentTime)); // #4 from assignment
+};
+
+// #2 from assignment 21
+var setTotalTimeInPlayerBar = function(totalTime) {
+    $('.total-time').text(filterTimeCode(totalTime)); // #5 from assignment
+};
+
+// #3 from asignment 21
+var filterTimeCode = function(timeInSeconds) { // #3 from assignment 21
+    var wholeSeconds = Math.floor(parseFloat(timeInSeconds));
+    var wholeMinutes = Math.floor(wholeSeconds / 60);
+    var displaySeconds = wholeSeconds % 60;
+    var finalTime = wholeMinutes + ':';
+    
+    if (displaySeconds < 10) {
+        finalTime += '0' + displaySeconds;
+    } else {
+        finalTime += displaySeconds;
+    }
+        
+    return finalTime;
 };
